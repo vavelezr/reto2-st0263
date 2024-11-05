@@ -77,7 +77,7 @@ Drupal fue desplegado con las siguientes configuraciones:
     - **Certificado SSL**: Generado con Cert-Manager y Let's Encrypt.
     - **Conexión al sistema de archivos**: EFS de AWS montado en el clúster Kubernetes.
 
-## 3.1. Estado de los Pods y Servicios en el clúster
+### 3.1. Estado de los Pods y Servicios en el clúster
 A continuación se muestra el estado de los pods y servicios en el clúster, donde se incluyen los pods de Drupal, MySQL, el provisionador de EFS y el controlador Nginx para Ingress. También se observa la IP externa asignada al Ingress para el acceso a la aplicación.
 ### Estado de los Pods
 ![image](https://github.com/user-attachments/assets/2e09e496-aec8-433b-bfa8-405004efa174)
@@ -101,5 +101,21 @@ En el directorio raíz se encuentran los siguientes archivos YAML clave para la 
 - La implementación de EFS permitió configurar un almacenamiento compartido entre los nodos del clúster.
 - Cert-Manager automatiza la renovación de los certificados SSL con Let's Encrypt, facilitando el uso de HTTPS en el dominio personalizado.
 
+## 6. Verificación del Despliegue en el Navegador
+Una vez completada la configuración y el despliegue en el clúster, se puede acceder a la aplicación Drupal en el navegador utilizando el dominio configurado: **https://reto2-telematica.me**.
+
+Al acceder al dominio, se puede observar lo siguiente:
+- **Funcionamiento de la aplicación**: Drupal carga correctamente, permitiendo interactuar con el sitio según lo configurado.
+
+![image](https://github.com/user-attachments/assets/33e8535b-4d94-40d7-a7ce-2baace4532ab)
+![image](https://github.com/user-attachments/assets/6fae2bc8-acea-4c7a-96f9-5e5b42cabbff)
+
+- **Certificado SSL**: La conexión es segura, como se indica en el navegador mediante el candado en la barra de direcciones. Esto confirma que el certificado SSL generado por Let's Encrypt y gestionado por Cert-Manager está activo y funcionando correctamente.
+![image](https://github.com/user-attachments/assets/55ac2f0e-f580-494c-bade-eb2f869ed3a2)
+
+Esta verificación final asegura que:
+- La aplicación está accesible desde Internet a través de HTTPS.
+- El balanceador de carga Ingress está redirigiendo adecuadamente el tráfico hacia los pods de Drupal.
+- La configuración de seguridad (SSL) protege la comunicación entre el usuario y el sitio.
 
 ## Referencias:
