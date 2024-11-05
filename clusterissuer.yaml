@@ -1,0 +1,78 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: drupal-ingress
+  namespace: myeksns
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: reto2-telematica.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: drupal
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - reto2-telematica.me
+      secretName: drupal-tls
+[cloudshell-user@ip-10-130-89-122 ~]$ cat efsprovisioner.yaml 
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: efs-provisioner
+spec:
+  selector:
+    matchLabels:
+      app: efs-provisioner
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: efs-provisioner
+    spec:
+      containers:
+        - name: efs-provisioner
+          image: quay.io/external_storage/efs-provisioner:latest
+          env:
+            - name: FILE_SYSTEM_ID
+              value: fs-030617ed924f00d08
+            - name: AWS_REGION
+              value: us-east-1
+            - name: PROVISIONER_NAME
+              value: eks-drupal/aws-efs
+          volumeMounts:
+            - name: pv-volume
+              mountPath: /persistentvolumes
+      volumes:
+        - name: pv-volume
+          nfs:
+            server: fs-030617ed924f00d08.efs.us-east-1.amazonaws.com
+            path: /
+[cloudshell-user@ip-10-130-89-122 ~]$ ls
+certificate.yaml  default.settings.php  drupaldeploy.yaml  drupal-ingress.yaml  efsprovisioner.yaml  get_helm.sh  letsencrypt-clusterissuer.yaml  mysqldeploy.yaml  rolebinding.yaml  storageclass.yaml
+[cloudshell-user@ip-10-130-89-122 ~]$ cat letsencrypt-clusterissuer.yaml 
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+ name: letsencrypt-prod
+spec:
+ acme:
+   server: https://acme-v02.api.letsencrypt.org/directory
+   email: katyfour101@gmail.com
+   privateKeySecretRef:
+     name: letsencrypt-prod
+   solvers:
+   - http01:
+       ingress:
+         class: nginx
