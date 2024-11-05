@@ -1,0 +1,64 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+ name: letsencrypt-prod
+spec:
+ acme:
+   server: https://acme-v02.api.letsencrypt.org/directory
+   email: katyfour101@gmail.com
+   privateKeySecretRef:
+     name: letsencrypt-prod
+   solvers:
+   - http01:
+       ingress:
+         class: nginx
+[cloudshell-user@ip-10-130-89-122 ~]$ cat mysqldeploy.yaml 
+apiVersion: v1
+kind: Service
+metadata:
+  name: drupal-mysql
+  labels:
+    app: drupal
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: drupal
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: drupal-mysql
+  labels:
+    app: drupal
+spec:
+  selector:
+    matchLabels:
+      app: drupal
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: drupal
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "your_password"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: eks-mysql
