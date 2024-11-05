@@ -27,9 +27,12 @@ El objetivo de este reto es desplegar un sistema de gestión de contenido (CMS) 
 ## 2. Información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas
 El diseño se basa en un clúster Kubernetes administrado en AWS (EKS) con un enfoque en la alta disponibilidad para la aplicación. La arquitectura incluye:
 - Un clúster EKS con un grupo de 2 nodos.
+  ![image](https://github.com/user-attachments/assets/9fe3b963-33f6-4665-a052-7cabc6f63424)
+
 - Uso de un recurso Ingress de Nginx como balanceador de carga, proporcionando una entrada única para los servicios y gestionando el tráfico hacia los pods de Drupal.
 - Sistema de archivos distribuido con Amazon EFS para almacenar de manera persistente los archivos de la aplicación Drupal, configurado a través de un StorageClass, un PersistentVolume (PV) y un PersistentVolumeClaim (PVC).
 - Certificado SSL proporcionado por Cert-Manager y Let's Encrypt para habilitar HTTPS en el dominio personalizado.
+![image](https://github.com/user-attachments/assets/231d5448-0aae-46e5-a57d-ac0a8948bb48)
 
 ### Detalles adicionales sobre los componentes clave:
 
@@ -73,6 +76,15 @@ Drupal fue desplegado con las siguientes configuraciones:
     - **Balanceador de carga**: Implementado mediante Ingress.
     - **Certificado SSL**: Generado con Cert-Manager y Let's Encrypt.
     - **Conexión al sistema de archivos**: EFS de AWS montado en el clúster Kubernetes.
+
+## 3.1. Estado de los Pods y Servicios en el clúster
+A continuación se muestra el estado de los pods y servicios en el clúster, donde se incluyen los pods de Drupal, MySQL, el provisionador de EFS y el controlador Nginx para Ingress. También se observa la IP externa asignada al Ingress para el acceso a la aplicación.
+### Estado de los Pods
+![image](https://github.com/user-attachments/assets/2e09e496-aec8-433b-bfa8-405004efa174)
+
+### Estado de los servicios
+![image](https://github.com/user-attachments/assets/fdcb8c56-63ea-4f5b-a199-93ecc27a397a)
+
 
 ## Archivos importantes del proyecto:
 En el directorio raíz se encuentran los siguientes archivos YAML clave para la configuración del despliegue:
