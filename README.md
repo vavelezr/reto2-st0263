@@ -97,11 +97,9 @@ En el directorio raíz se encuentran los siguientes archivos YAML clave para la 
 - `rolebinding.yaml`
 - `storageclass.yaml`
 
-## 5. Otra información relevante para esta actividad
-- La implementación de EFS permitió configurar un almacenamiento compartido entre los nodos del clúster.
-- Cert-Manager automatiza la renovación de los certificados SSL con Let's Encrypt, facilitando el uso de HTTPS en el dominio personalizado.
 
-## 6. Verificación del Despliegue en el Navegador
+
+## 5. Verificación del Despliegue en el Navegador
 Una vez completada la configuración y el despliegue en el clúster, se puede acceder a la aplicación Drupal en el navegador utilizando el dominio configurado: **https://reto2-telematica.me**.
 
 Al acceder al dominio, se puede observar lo siguiente:
@@ -118,4 +116,9 @@ Esta verificación final asegura que:
 - El balanceador de carga Ingress está redirigiendo adecuadamente el tráfico hacia los pods de Drupal.
 - La configuración de seguridad (SSL) protege la comunicación entre el usuario y el sitio.
 
+## 6. Otra información relevante para esta actividad
+- La implementación de EFS permitió configurar un almacenamiento compartido entre los nodos del clúster.
+- Cert-Manager automatiza la renovación de los certificados SSL con Let's Encrypt, facilitando el uso de HTTPS en el dominio personalizado.
+
+  
 ## Referencias:
