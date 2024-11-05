@@ -109,6 +109,7 @@ Al acceder al dominio, se puede observar lo siguiente:
 ![image](https://github.com/user-attachments/assets/6fae2bc8-acea-4c7a-96f9-5e5b42cabbff)
 
 - **Certificado SSL**: La conexión es segura, como se indica en el navegador mediante el candado en la barra de direcciones. Esto confirma que el certificado SSL generado por Let's Encrypt y gestionado por Cert-Manager está activo y funcionando correctamente.
+
 ![image](https://github.com/user-attachments/assets/55ac2f0e-f580-494c-bade-eb2f869ed3a2)
 
 Esta verificación final asegura que:
